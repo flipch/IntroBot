@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroBot.Data", "IntroBot.Data\IntroBot.Data.csproj", "{D6E7CC8E-D9C5-4F57-A849-5C48C7E5479D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntroBot", "IntroBot\IntroBot.csproj", "{8F79A5BF-D9E0-4FED-8B64-E3F121FE59C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6E7CC8E-D9C5-4F57-A849-5C48C7E5479D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6E7CC8E-D9C5-4F57-A849-5C48C7E5479D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6E7CC8E-D9C5-4F57-A849-5C48C7E5479D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6E7CC8E-D9C5-4F57-A849-5C48C7E5479D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F79A5BF-D9E0-4FED-8B64-E3F121FE59C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F79A5BF-D9E0-4FED-8B64-E3F121FE59C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F79A5BF-D9E0-4FED-8B64-E3F121FE59C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F79A5BF-D9E0-4FED-8B64-E3F121FE59C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {59365301-37A7-4B96-A802-5C1B31C92E06}
+	EndGlobalSection
+EndGlobal
