@@ -21,6 +21,10 @@ namespace IntroBot.Data.Contexts
                 .HasMany(s => s.IntroOwners)
                 .WithOne(m => m.IntroSong)
                 .OnDelete(DeleteBehavior.SetNull);
+            
+            modelBuilder.Entity<Song>()
+                .HasIndex(s => s.Url)
+                .IsUnique();
         }
     }
 }

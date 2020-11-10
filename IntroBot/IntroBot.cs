@@ -1,7 +1,9 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using IntroBot.Data.Contexts;
 using IntroBot.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,7 +19,6 @@ namespace IntroBot
     public class IntroBot
     {
         public IConfigurationRoot Configuration { get; }
-        private readonly DiscordSocketClient _client;
 
         public IntroBot(string[] args)
         {
@@ -28,11 +29,11 @@ namespace IntroBot
             Configuration = builder.Build();
         }
 
-        public static async Task RunAsync(string[] args)
+        public static Task RunAsync(string[] args)
         {
 
             var startup = new IntroBot(args);
-            await startup.RunAsync();
+            return startup.RunAsync();
         }
 
         public async Task RunAsync()
@@ -42,13 +43,8 @@ namespace IntroBot
             ConfigureServices(services);
 
             var provider = services.BuildServiceProvider();
-            //provider.GetRequiredService<LoggingHandler>();      // Start the logging service
             provider.GetRequiredService<CommandHandlingService>();      // Start the command handler service
-            //provider.GetRequiredService<ReactionService>();     // Start the react to messages handler
-            //provider.GetRequiredService<MessageService>();      // Start the message service handler
-            //provider.GetRequiredService<UserJoinedService>();   // Start the userjoined service
-            //provider.GetRequiredService<ToshiService>();       // Start the Toshi bot service
-            //provider.GetRequiredService<DBService>().Setup();
+            provider.GetRequiredService<IntroContext>();
             await provider.GetRequiredService<StartupService>().StartAsync();       // Start the startup service
             await Task.Delay(Timeout.Infinite);                               // Keep the program alive
         }
@@ -61,6 +57,7 @@ namespace IntroBot
             services
                 .AddSingleton(Configuration)
                 .AddLogging()
+                .AddDbContext<IntroContext>(opt => opt.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("SQL")))
                 .AddSingleton(new DiscordShardedClient(config))
                 .AddLavaNode(x =>
                 {

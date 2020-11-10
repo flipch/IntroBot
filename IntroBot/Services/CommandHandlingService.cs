@@ -15,6 +15,7 @@ namespace IntroBot.Services
         private readonly CommandService _commands;
         private readonly DiscordShardedClient _discord;
         private readonly IServiceProvider _services;
+        private readonly char _commandPrefix = '!';
 
         public CommandHandlingService(IServiceProvider services)
         {
@@ -37,17 +38,29 @@ namespace IntroBot.Services
             // Ignore system messages, or messages from other bots
             if (!(rawMessage is SocketUserMessage message))
                 return;
+
             if (message.Source != MessageSource.User)
                 return;
 
             // This value holds the offset where the prefix ends
             var argPos = 0;
-            if (!message.HasMentionPrefix(_discord.CurrentUser, ref argPos))
-                return;
+            if (message.HasCharPrefix(_commandPrefix, ref argPos))
+            {
+                await ExecuteAsync(message, argPos);
+            }
+            else if (message.HasMentionPrefix(_discord.CurrentUser, ref argPos))
+            {
+                await ExecuteAsync(message, argPos);
+            }
 
+            return;
+        }
+
+        private Task ExecuteAsync(SocketUserMessage message, int argPos)
+        {
             // A new kind of command context, ShardedCommandContext can be utilized with the commands framework
             var context = new ShardedCommandContext(_discord, message);
-            await _commands.ExecuteAsync(context, argPos, _services);
+            return _commands.ExecuteAsync(context, argPos, _services);
         }
 
         public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
@@ -61,7 +74,7 @@ namespace IntroBot.Services
                 return;
 
             // the command failed, let's notify the user that something happened.
-            await context.Channel.SendMessageAsync($"error: {result.ToString()}");
+            await context.Channel.SendMessageAsync($"error: {result}");
         }
 
         private Task LogAsync(LogMessage log)

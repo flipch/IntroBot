@@ -4,14 +4,16 @@ using IntroBot.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IntroBot.Data.Migrations
 {
     [DbContext(typeof(IntroContext))]
-    partial class IntroContextModelSnapshot : ModelSnapshot
+    [Migration("20201110012553_Add IntroSong Timestamp to User")]
+    partial class AddIntroSongTimestamptoUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using Victoria;
 using Victoria.EventArgs;
@@ -38,6 +40,38 @@ namespace IntroBot.Services
             _lavaNode.OnWebSocketClosed += OnWebSocketClosed;
 
             VoteQueue = new HashSet<ulong>();
+        }
+
+        public async Task<(bool Success, string Message)> JoinChannel(IVoiceState voiceState, SocketGuild guild, ITextChannel textChannel = null)
+        {
+            var result = (Success: true, Message: "");
+            if (_lavaNode.HasPlayer(guild))
+            {
+                result.Success = false;
+                result.Message = "I'm already connected to a voice channel!";
+                return result;
+            }
+
+            if (voiceState?.VoiceChannel == null)
+            {
+                result.Success = false;
+                result.Message = "You must be connected to a voice channel!";
+                return result;
+            }
+
+            try
+            {
+                await _lavaNode.JoinAsync(voiceState.VoiceChannel, textChannel);
+                result.Message = $"Joined {voiceState.VoiceChannel.Name}!";
+            }
+            catch (Exception exception)
+            {
+                result.Success = false;
+                result.Message = exception.Message;
+                return result;
+            }
+
+            return result;
         }
 
         private Task OnPlayerUpdated(PlayerUpdateEventArgs arg)
